@@ -44,7 +44,7 @@ export class FXMLHttpRequest {
      * @param {string} url the file location
      * @param {boolean} async true (asynchronous) or false (synchronous)
      */
-    open(method, url, async) {
+    open(method, url, async = false) {
         this.readyState = 1;
         this.httpRequestHeader = `${method} ${url} HTTP/1.1\r\n`;
         this.async = async;

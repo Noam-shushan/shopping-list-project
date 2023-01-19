@@ -1,6 +1,6 @@
 const baseTitle = "My Website";
 
-const urlHash = {
+export const urlHash = {
     404: {
         title: "404 | " + baseTitle,
         template: "frontend/templates/404.html",
@@ -8,8 +8,8 @@ const urlHash = {
     "/": {
         title: "Home | " + baseTitle,
         template: "frontend/templates/home.html",
-        script: "/js/views/home-view.js",
-        style: "/styles/home.css"
+        // script: "/js/views/home-view.js",
+        // style: "/styles/home.css"
     },
     inDevlopment: {
         title: "In Devlopment | " + baseTitle,
