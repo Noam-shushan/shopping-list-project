@@ -10,39 +10,42 @@ const urls = {
     "/login": loginService,
 }
 
-
-export function response(request) {
-    let jsonContent = createResponseContent(request);
-
-    let httpHeader = "HTTP/1.1 200 OK\r\n"
-        + "Content-Type: applection/json\r\n" +
-        + "Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS\r\n"
-        + "Content-Length: " + jsonContent.length + "\r\n"
-        + "\r\n";
-
-    return new Response(httpHeader, jsonContent);
-}
-
-
 /**
- * 
- * @param {Request} request 
- * @returns {Rosponse} response
+ * The server class
+ * get the request and create the response
  */
-function createResponseContent(request) {
-    let response = "";
-    let url = request.url;
-    let method = request.method;
-    let body = request.body;
-
-    let service = urls[url];
-    if (service) {
-        response = service[method](body);
-    } else {
-        response = "404 Not Found";
+export class Server {
+    constructor() {
     }
 
-    return response;
+    response(request) {
+        let content = createResponseContent(request);
+        let jsonContent = JSON.stringify(content);
+
+        let httpHeader = "HTTP/1.1 200 OK\r\n"
+            + "Content-Type: applection/json\r\n"
+            + "Access-Control-Allow-Methods: GET, POST, PUT, DELETE\r\n"
+            + "Content-Length: " + jsonContent.length + "\r\n\r\n";
+
+        return httpHeader + jsonContent;
+    }
+    /**
+     * 
+     * @param {Request} request 
+     * @returns {Rosponse} response
+     */
+    createResponseContent(request) {
+        let response = "";
+
+        let service = urls[request.url];
+        if (service) {
+            response = service[request.method](request.body);
+        } else {
+            response = { error: "404 Not Found" };
+        }
+
+        return response;
+    }
 }
 
 
