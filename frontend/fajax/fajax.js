@@ -1,4 +1,4 @@
-import { Request, createHttpRequest } from '../../network/networks.js';
+import { Request, createHttpRequest } from '../../backend/network/networks.js';
 
 export class FXMLHttpRequest {
     constructor() {
@@ -64,7 +64,7 @@ export class FXMLHttpRequest {
             this.httpRequestHeader += `\r\n`;
         }
         this.readyState = 2;
-        this.response = createHttpRequest(this.httpRequestHeader);
+        const response = createHttpRequest(this.httpRequestHeader);
         this.readyState = 3;
         if (response.statusCode < 400 && response.statusCode > 199) {
             this.status = response.statusCode;

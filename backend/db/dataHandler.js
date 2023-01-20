@@ -1,45 +1,55 @@
 
 /**
- * 
- * @param {string} id 
- * @param {object} data
+ * Save data to local storage
+ * if the fullId is in the format of "collectionName/recordId" then it will update the record
+ * if the fullId is in the format of "collectionName" then it will create a new record
+ * @param {string} fullId a string in the format of "collectionName/recordId" 
+ * @param {object} data the data to save
  */
-export function saveData(id, data) {
-    let collectionName = id.split('/')[0];
-    let redordId = id.split('/')[1];
-
-    if (localStorage.getItem(collectionName) === null) {
-        localStorage.setItem(collectionName, JSON.stringify([]));
-    }
-
-    let entetisId = JSON.parse(localStorage.getItem(collectionName));
-    if (redordId in entetisId) {
-        localStorage.setItem(id, JSON.stringify(data));
+export function saveData(fullId, data) {
+    let splitId = fullId.split('/');
+    let collectionName = splitId[0];
+    let collection = getCollection(collectionName);
+    if (splitId.length === 2) {
+        let redordId = splitId[1];
+        if (redordId in collection) { // Update record
+            localStorage.setItem(fullId, JSON.stringify(data));
+        }
     }
     else {
         const newID = crypto.randomUUID();
-        entetisId.push(newID);
-        localStorage.setItem(collectionName, JSON.stringify(entetisId));
+        collection.push(newID);
+        localStorage.setItem(collectionName, JSON.stringify(collection));
         localStorage.setItem(`${collectionName}/${newID}`, JSON.stringify(data));
     }
 }
 
+function getCollection(collectionName) {
+    if (localStorage.getItem(collectionName) === null) {
+        localStorage.setItem(collectionName, JSON.stringify([]));
+    }
+    return JSON.parse(localStorage.getItem(collectionName));
+}
+
 
 /**
- * TODO:
- * @param {string} id
+ * Load data from local storage
+ * if the fullId is in the format of "collectionName/recordId" then it will return the record
+ * if the fullId is in the format of "collectionName" then it will return all the records in the collection
+ * @param {string} fullId a string in the format of "collectionName/recordId"
+ * @returns {object} the record or an array of records
  */
-export function loadData(id) {
-    let splitId = id.split('/');
+export function loadData(fullId) {
+    let splitId = fullId.split('/');
     if (splitId.length === 2) {
-        return localStorage.getItem(id);
+        return localStorage.getItem(fullId);
     }
     else if (splitId.length === 1) {
         let collectionName = splitId[0];
-        let entetisId = JSON.parse(localStorage.getItem(collectionName));
+        let collection = getCollection(collectionName);
         let data = [];
-        for (let i = 0; i < entetisId.length; i++) {
-            const record = localStorage.getItem(`${collectionName}/${entetisId[i]}`);
+        for (let i = 0; i < collection.length; i++) {
+            const record = localStorage.getItem(`${collectionName}/${collection[i]}`);
             data.push(JSON.parse(record));
         }
         return data;

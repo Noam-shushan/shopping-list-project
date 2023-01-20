@@ -1,13 +1,10 @@
-import { UserStore } from "./usersService";
+import { UserStore } from "./usersService.js";
 
-import { Request, Rosponse } from "../network/networks.js";
+import { Request, Response } from "../network/networks.js";
 
 
 const urls = {
     "/users": new UserStore(),
-    "/products": productsService,
-    "/groselyList": groselyListService,
-    "/login": loginService,
 }
 
 /**
@@ -19,7 +16,7 @@ export class Server {
     }
 
     response(request) {
-        let content = createResponseContent(request);
+        let content = this.createResponseContent(request);
         let jsonContent = JSON.stringify(content);
 
         let httpHeader = "HTTP/1.1 200 OK\r\n"
@@ -32,14 +29,15 @@ export class Server {
     /**
      * 
      * @param {Request} request 
-     * @returns {Rosponse} response
+     * @returns {Response} response
      */
     createResponseContent(request) {
         let response = "";
 
-        let service = urls[request.url];
+        const service = urls[request.url];
         if (service) {
-            response = service[request.method](request.body);
+            const method = service.route[request.method];
+            response = method(request.body);
         } else {
             response = { error: "404 Not Found" };
         }

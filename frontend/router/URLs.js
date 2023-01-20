@@ -7,8 +7,8 @@ export const urlHash = {
     },
     "/": {
         title: "Home | " + baseTitle,
-        template: "frontend/templates/home.html",
-        // script: "/js/views/home-view.js",
+        template: "/frontend/templates/home.html",
+        script: "frontend/controllers/home.js",
         // style: "/styles/home.css"
     },
     inDevlopment: {

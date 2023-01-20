@@ -9,12 +9,21 @@ export class User {
 }
 
 export class UserStore {
+    constructor() {
+        this.route = {
+            "GET": this.getAllUsers,
+            "POST": this.addUser,
+            // "PUT": this.updateUser,
+            // "DELETE": this.deleteUser
+        }
+    }
+
     getAllUsers() {
-        return JSON.stringify(loadData('users'));
+        return loadData('users');
     }
 
     getUser(id) {
-        return JSON.stringify(loadData(id));
+        return loadData(id);
     }
 
     addUser(user) {

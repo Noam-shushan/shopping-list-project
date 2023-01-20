@@ -41,7 +41,7 @@ export class Request {
         if (firstLine.length !== 3) {
             throw new Error("Invalid request");
         }
-        [method, url, httpVersion] = firstLine;
+        const [method, url, httpVersion] = firstLine;
         if (httpVersion !== "HTTP/1.1") {
             throw new Error("Invalid HTTP version");
         }
@@ -66,6 +66,9 @@ export class Request {
     }
 }
 
+/**
+ * Defines the response object
+ */
 export class Response {
     constructor(httpResponse) {
         let lines = httpResponse.split("\r\n");

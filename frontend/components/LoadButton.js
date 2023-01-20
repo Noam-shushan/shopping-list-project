@@ -1,11 +1,12 @@
 import { FXMLHttpRequest } from "../fajax/fajax.js";
 
-class LoadButton {
+export class LoadButton {
+    /**
+     * Creates a new LoadButton component and bind it to the given element
+     * @param {HTMLElement} element 
+     */
     constructor(element) {
         this.element = element;
-    }
-
-    init() {
         this.element.addEventListener("click", this.loadMore.bind(this));
     }
 
