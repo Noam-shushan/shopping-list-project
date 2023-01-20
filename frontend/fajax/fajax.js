@@ -1,4 +1,5 @@
-import { Request, createHttpRequest } from '../../backend/network/networks.js';
+import { createHttpRequest } from '../../backend/network/networks.js';
+
 
 export class FXMLHttpRequest {
     constructor() {
@@ -12,7 +13,7 @@ export class FXMLHttpRequest {
          * 200: "OK"
          * 403: "Forbidden"
          * 404: "Not Found"
-         * @type {number}
+         * @type {Number}
          */
         this.status = 0;
         /**

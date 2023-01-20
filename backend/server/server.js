@@ -1,6 +1,6 @@
 import { UserStore } from "./usersService.js";
 
-import { Request, Response } from "../network/networks.js";
+import { Request } from "../network/networks.js";
 
 
 const urls = {
@@ -11,10 +11,16 @@ const urls = {
  * The server class
  * get the request and create the response
  */
+// TODO: Implement POST, PUT, DELETE
+// TODO: Implement other response types (e.g. 404, 403, 500)
 export class Server {
     constructor() {
     }
-
+    /**
+     * Returns the response of the server as a string following the HTTP protocol
+     * @param {Request} request 
+     * @returns {string} http response
+     */
     response(request) {
         let content = this.createResponseContent(request);
         let jsonContent = JSON.stringify(content);
@@ -29,7 +35,7 @@ export class Server {
     /**
      * 
      * @param {Request} request 
-     * @returns {Response} response
+     * @returns {object} response content as an object
      */
     createResponseContent(request) {
         let response = "";
