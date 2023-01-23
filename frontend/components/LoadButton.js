@@ -13,7 +13,6 @@ export class LoadButton {
     loadMore() {
         this.element.classList.add("loading");
         this.element.disabled = true;
-
         setTimeout(() => {
             let request = new FXMLHttpRequest();
             request.open("GET", "/users");
