@@ -13,20 +13,18 @@ export class LoadButton {
     loadMore() {
         this.element.classList.add("loading");
         this.element.disabled = true;
+        
+        let request = new FXMLHttpRequest();
+        request.open("GET", "/users");
 
-        setTimeout(() => {
-            let request = new FXMLHttpRequest();
-            request.open("GET", "/users");
+        request.onload = () => {
+            let data = JSON.parse(request.responseText);
+            renderHTML(data);
+        };
 
-            request.onload = () => {
-                let data = JSON.parse(request.responseText);
-                renderHTML(data);
-            };
+        request.send();
 
-            request.send();
-
-            this.element.classList.remove("loading");
-            this.element.disabled = false;
-        }, 2000);
+        this.element.classList.remove("loading");
+        this.element.disabled = false;
     }
 }

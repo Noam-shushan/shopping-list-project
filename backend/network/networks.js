@@ -6,19 +6,33 @@ import { Server } from "../server/server.js";
  * @param {string} httpRequest 
  * @returns {Response} response
  */
-export function createHttpRequest(httpRequest) {
+export function getResponseHeader(httpRequest) {
     try {
         const server = new Server();
 
         let request = new Request(httpRequest);
 
-        let httpResponse = server.response(request);
+        let httpResponse = server.getResponseHeader(request);
 
-        return new Response(httpResponse);
+        return new ResponseHeader(httpResponse);
     }
     catch (error) {
-        const errJson = JSON.stringify(error);
-        return new Response(`HTTP/1.1 400 Bad Request\r\n\r\n ${errJson}`);
+        return new ResponseHeader("HTTP/1.1 400 Bad Request\r\n\r\n" );
+    }
+}
+
+export function getResponseBody(httpRequest) {
+    try {
+        const server = new Server();
+
+        let request = new Request(httpRequest);
+
+        let httpResponse = server.getResponseContent(request);
+
+        return new ResponseContent(httpResponse);
+    }
+    catch (error) {
+        return new ResponseHeader("HTTP/1.1 400 Bad Request\r\n\r\n" );
     }
 
 }
@@ -66,14 +80,45 @@ export class Request {
     }
 }
 
-/**
- * Defines the response object
- */
-export class Response {
+// /**
+//  * Defines the response object
+//  */
+// export class Response {
+//     constructor(httpResponse) {
+//         let lines = httpResponse.split("\r\n");
+//         this.httpHeader = lines[0];
+//         this.content = lines[lines.length - 1];
+//         this.statusCode = Number(this.httpHeader.split(" ")[1]);
+//     }
+// }
+
+export class ResponseHeader {
     constructor(httpResponse) {
         let lines = httpResponse.split("\r\n");
         this.httpHeader = lines[0];
-        this.content = lines[lines.length - 1];
         this.statusCode = Number(this.httpHeader.split(" ")[1]);
     }
 }
+
+function delay(ms) {
+    var start = Date.now(),
+        now = start;
+    while (now - start < ms) {
+      now = Date.now();
+    }
+}
+
+export function downloading (during = 20000) {
+    console.log("start downloading ...")
+    delay(during) 
+    console.log("end downloading")
+}
+
+
+export class ResponseContent {
+    constructor(httpResponse) {
+        this.content = lines[lines.length - 1];
+    }
+}
+
+

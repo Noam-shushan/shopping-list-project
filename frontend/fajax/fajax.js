@@ -1,10 +1,17 @@
-import { createHttpRequest } from '../../backend/network/networks.js';
+import * as network from '../../backend/network/networks.js';
+
 
 
 export class FXMLHttpRequest {
+    static UNSENT = 0;
+    static OPENED = 1;
+    static HEADERS_RECEIVED = 2;
+    static LOADING = 3;
+    static DONE = 4;
+    
     constructor() {
         /**
-         * Defines a function to be called when the request is recieved
+         * Defines a function to be called when the request is received
          * @type {function}
          */
         this.onload = () => { };
@@ -26,7 +33,7 @@ export class FXMLHttpRequest {
          * @type {Number}
          * @readonly   
          */
-        this.readyState = 0;
+        this.readyState = FXMLHttpRequest.UNSENT;
         /**
          * Returns the response data as a string
          * @type {string}
@@ -45,8 +52,8 @@ export class FXMLHttpRequest {
      * @param {string} url the file location
      * @param {boolean} async true (asynchronous) or false (synchronous)
      */
-    open(method, url, async = false) {
-        this.readyState = 1;
+    open(method, url, async = true) {
+        this.readyState = FXMLHttpRequest.OPENED;
         this.httpRequestHeader = `${method} ${url} HTTP/1.1\r\n`;
         this.async = async;
     }
@@ -64,14 +71,16 @@ export class FXMLHttpRequest {
         else {
             this.httpRequestHeader += `\r\n`;
         }
-        this.readyState = 2;
-        const response = createHttpRequest(this.httpRequestHeader);
-        this.readyState = 3;
+        const response = network.getResponseHeader(this.httpRequestHeader);
+        this.readyState = FXMLHttpRequest.HEADERS_RECEIVED;
+        this.status = response.statusCode;
+
         if (response.statusCode < 400 && response.statusCode > 199) {
-            this.status = response.statusCode;
-            this.responseText = response.content;
-            this.readyState = 4;
+            network.downloading();
+            this.responseText = network.getResponseBody(this.httpRequestHeader);
         }
+        this.readyState = FXMLHttpRequest.DONE;
+
     }
     setRequestHeader(header, value) {
         this.httpRequestHeader += `${header}: ${value}\r\n`;
