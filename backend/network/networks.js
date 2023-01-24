@@ -17,7 +17,7 @@ export function getResponseHeader(httpRequest) {
         return new ResponseHeader(httpResponse);
     }
     catch (error) {
-        return new ResponseHeader("HTTP/1.1 400 Bad Request\r\n\r\n" );
+        return new ResponseHeader("HTTP/1.1 400 Bad Request\r\n\r\n");
     }
 }
 
@@ -32,7 +32,7 @@ export function getResponseBody(httpRequest) {
         return new ResponseContent(httpResponse);
     }
     catch (error) {
-        return new ResponseHeader("HTTP/1.1 400 Bad Request\r\n\r\n" );
+        return new ResponseHeader("HTTP/1.1 400 Bad Request\r\n\r\n");
     }
 
 }
@@ -104,13 +104,13 @@ function delay(ms) {
     var start = Date.now(),
         now = start;
     while (now - start < ms) {
-      now = Date.now();
+        now = Date.now();
     }
 }
 
-export function downloading (during = 20000) {
+export function downloading(during = 20000) {
     console.log("start downloading ...")
-    delay(during) 
+    delay(during)
     console.log("end downloading")
 }
 
@@ -120,5 +120,7 @@ export class ResponseContent {
         this.content = lines[lines.length - 1];
     }
 }
+
+
 
 
