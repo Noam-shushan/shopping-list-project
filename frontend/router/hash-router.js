@@ -1,7 +1,7 @@
 /**
  * The router of the application using the hash
  * Handle the location change and load the new page with his script and style
- * The gool is to create a SPA (Single Page Application) with no freamwork
+ * The goal is to create a SPA (Single Page Application) with no framework
  */
 
 import { urlHash } from "./URLs.js";
