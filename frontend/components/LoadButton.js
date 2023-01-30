@@ -19,7 +19,10 @@ export class LoadButton {
 
         request.onload = () => {
             let data = JSON.parse(request.responseText);
-            renderHTML(data);
+            console.log(data);
+        };
+        request.onerror = () => {
+            console.log(request.responseText);
         };
 
         request.send();
