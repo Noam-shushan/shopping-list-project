@@ -6,6 +6,14 @@ import { Server } from "../server/server.js";
  * @param {*} req 
  * @returns 
  */
+export function sendAsync(req, callback) {
+    setTimeout(() => {
+        const server = new Server();
+        const res = server.hendleRequest(req);
+        callback(res);
+    }, 3000)
+}
+
 export function send(req) {
     const server = new Server();
     const res = server.hendleRequest(req);
@@ -22,7 +30,7 @@ function delay(ms) {
     }
 }
 
-export function downloading(during = 7000) {
+export function downloading(during = 3000) {
     console.log("start downloading ...");
     delay(during);
     console.log("end downloading");
