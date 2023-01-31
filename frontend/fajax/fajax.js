@@ -2,7 +2,9 @@ import * as network from '../../backend/network/networks.js';
 import { Response } from '../../utils/HttpResponse.js';
 
 
-
+/**
+ * The class that handles the request and response
+*/
 export class FXMLHttpRequest {
     constructor() {
         /**

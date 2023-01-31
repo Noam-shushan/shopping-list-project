@@ -2,9 +2,49 @@ import { saveData, loadData } from "../db/dataHandler.js";
 
 export class User {
     constructor(name, email, password) {
+        /**
+         * @type {string}
+         */
         this.name = name;
+        /**
+         * @type {string}
+         */
         this.email = email;
         this.password = password;
+        /**
+         * @type {ShoppingList[]}
+         */
+        this.shoppingLists = [];
+    }
+}
+
+const postData = {
+    userEmail: "email",
+    listName: "listName",
+    product: {
+        name: "name",
+        category: "category",
+        amount: "amount"
+    }
+}
+export class ShoppingList {
+    constructor(name, products) {
+        /**
+         * @type {string}
+         */
+        this.name = name;
+        /**
+         * @type {Product[]}
+         */
+        this.products = products;
+    }
+}
+
+class Product {
+    constructor(name, category, amount) {
+        this.name = name;
+        this.category = category;
+        this.amount = amount;
     }
 }
 
@@ -13,12 +53,9 @@ export class UserStore {
         this.route = {
             "GET": this.getAllUsers,
             "POST": this.addUser,
-            // "PUT": this.updateUser,
-            // "DELETE": this.deleteUser
+            "PUT": this.updateUser,
+            "DELETE": this.deleteUser
         }
-        // this.addUser(new User("admin1", "11sdf22", "admin"));
-        // this.addUser(new User("admin2", "111afsd2", "admin"));
-        // this.addUser(new User("admin3", "111asdf2", "admin"));
     }
 
     getAllUsers() {
@@ -30,7 +67,7 @@ export class UserStore {
     }
 
     addUser(user) {
-        saveData('users', user);
+        saveData(`users/${user.email}`, user);
     }
 }
 

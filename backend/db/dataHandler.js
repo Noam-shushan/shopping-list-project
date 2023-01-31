@@ -12,15 +12,11 @@ export function saveData(fullId, data) {
     let collection = getCollection(collectionName);
     if (splitId.length === 2) {
         let redordId = splitId[1];
-        if (redordId in collection) { // Update record
-            localStorage.setItem(fullId, JSON.stringify(data));
+        if (!(redordId in collection)) {
+            collection.push(redordId);
+            localStorage.setItem(collectionName, JSON.stringify(collection));
         }
-    }
-    else {
-        const newID = crypto.randomUUID();
-        collection.push(newID);
-        localStorage.setItem(collectionName, JSON.stringify(collection));
-        localStorage.setItem(`${collectionName}/${newID}`, JSON.stringify(data));
+        localStorage.setItem(fullId, JSON.stringify(data));
     }
 }
 

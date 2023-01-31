@@ -4,6 +4,7 @@ import { HttpResponse } from "../../utils/HttpResponse.js";
 
 const urls = {
     "/users": new UserStore(),
+    "/stores": null,
 }
 
 /**
