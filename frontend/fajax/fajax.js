@@ -48,23 +48,24 @@ export class FXMLHttpRequest {
     /**
      * Sends the request to the server
      * If the request is GET method, the body parameter is ignored
-     * @param {*} body the body of the request in POST method, optional
+     * @param {*} body the body of the request in POST method, optional, default is null
      */
-    send(body = '') {
+    send(body = null) {
         if (body) {
-            this.setRequestHeader('Content-Length', body.length);
-            this.httRequestText += `\r\n${body}`;
+            const bodyJson = JSON.stringify(body);
+            this.setRequestHeader('Content-Length', bodyJson.length);
+            this.setRequestHeader('Content-Type', 'application/json');
+            this.httRequestText += `\r\n${bodyJson}`;
         }
         else {
             this.httRequestText += `\r\n`;
         }
         if (this.async) {
-            network.sendAsync(this.httRequestText,(httpResponse)=>{
+            network.sendAsync(this.httRequestText, (httpResponse) => {
                 this.handelResponse(httpResponse);
             });
-
         }
-        else { 
+        else {
             let httpResponse = network.send(this.httRequestText);
             this.handelResponse(httpResponse)
         }
@@ -72,7 +73,6 @@ export class FXMLHttpRequest {
 
     handelResponse(httpResponse) {
         const response = new Response(httpResponse);
-
         this.status = response.statusCode;
         this.responseText = response.body;
         if (this.status < 400 && this.status > 199) {

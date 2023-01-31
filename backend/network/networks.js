@@ -30,7 +30,7 @@ function delay(ms) {
     }
 }
 
-export function downloading(during = 3000) {
+function downloading(during = 3000) {
     console.log("start downloading ...");
     delay(during);
     console.log("end downloading");
