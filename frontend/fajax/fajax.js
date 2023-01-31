@@ -58,13 +58,19 @@ export class FXMLHttpRequest {
         else {
             this.httRequestText += `\r\n`;
         }
-        let httpResponse = '';
         if (this.async) {
+            network.sendAsync(this.httRequestText,(httpResponse)=>{
+                this.handelResponse(httpResponse);
+            });
 
         }
-        else {
-            httpResponse = network.send(this.httRequestText);
+        else { 
+            let httpResponse = network.send(this.httRequestText);
+            this.handelResponse(httpResponse)
         }
+    }
+
+    handelResponse(httpResponse) {
         const response = new Response(httpResponse);
 
         this.status = response.statusCode;

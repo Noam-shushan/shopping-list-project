@@ -15,7 +15,7 @@ export class LoadButton {
         this.element.disabled = true;
 
         let request = new FXMLHttpRequest();
-        request.open("GET", "/users");
+        request.open("GET", "/users",false);
 
         request.onload = () => {
             let data = JSON.parse(request.responseText);
