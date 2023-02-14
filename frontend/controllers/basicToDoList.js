@@ -1,5 +1,6 @@
 import { AddItemButton } from "../components/addItemButton.js";
 import { reloadAllItemsButton } from "../components/reloadOllProducts.js";
+import { DeleteItemButton } from "../components/deleteItemButton.js";
 
 // Create a "close" button and append it to each list item
 var myNodelist = document.getElementsByTagName("LI");
@@ -66,5 +67,6 @@ function newElement() {
   close[close.length -1].onclick = function() {
       var div = this.parentElement;
       div.style.display = "none";
+      new DeleteItemButton(this.parentElement);
   }
 }

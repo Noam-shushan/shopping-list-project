@@ -1,4 +1,5 @@
 import { FXMLHttpRequest } from "../fajax/fajax.js";
+import { DeleteItemButton } from "../components/deleteItemButton.js";
 
 
 export class reloadAllItemsButton {
@@ -36,9 +37,8 @@ export class reloadAllItemsButton {
                 close[close.length -1].onclick = function() {
                     var div = this.parentElement;
                     div.style.display = "none";
+                    new DeleteItemButton(this.parentElement);
                 }
-
-    
             });
         };
         request.onerror = () => {

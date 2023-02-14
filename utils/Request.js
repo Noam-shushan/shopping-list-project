@@ -6,7 +6,7 @@ export class Request {
         let lines = httpRequest.split("\r\n");
         [this.method, this.url] = this.valideteRequest(lines);
         this.setHeaders(lines);
-        if (this.method === "POST") {
+        if (this.method === "POST" || this.method === "PUT" || this.method === "DELETE") {
             this.body = lines[lines.length - 1];
         }
     }

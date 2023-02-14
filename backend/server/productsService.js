@@ -1,4 +1,4 @@
-import { saveData, loadData } from "../db/dataHandler.js";
+import { saveData, loadData, deleteItem } from "../db/dataHandler.js";
 
 export class Product {
     constructor(name, in_cart) {
@@ -21,8 +21,9 @@ export class ProductStore {
         return loadData('product');
     }
 
-    getProduct(id) {
-        return loadData(id);
+    deleteProduct(product) {
+        let item = 'product/' + product;
+        deleteItem(item)
     }
 
     addProduct(product) {
