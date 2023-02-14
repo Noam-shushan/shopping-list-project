@@ -20,6 +20,8 @@ export class LoadButton {
         request.onload = () => {
             let data = JSON.parse(request.responseText);
             console.log(data);
+            let last_user = data[data.length - 1];
+            document.getElementById("userDiv").innerHTML = last_user["name"];
         };
         request.onerror = () => {
             console.log(request.responseText);

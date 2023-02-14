@@ -11,6 +11,13 @@ export const urlHash = {
         script: "frontend/controllers/home.js",
         // style: "/styles/home.css"
     },
+    basicToDoList: {
+        title: "basic To Do List | " + baseTitle,
+        template: "frontend/templates/basicToDoList.html",
+        script: "frontend/controllers/basicToDoList.js",
+        style: "frontend/css/basicToDoList.css"
+    },
+
     inDevlopment: {
         title: "In Devlopment | " + baseTitle,
         template: "/pages/in-devlopment.html"
