@@ -9,7 +9,7 @@ export const urlHash = {
         title: "Home | " + baseTitle,
         template: "/frontend/templates/home.html",
         script: "frontend/controllers/home.js",
-        // style: "/styles/home.css"
+        style: "frontend/css/home.css"
     },
     basicToDoList: {
         title: "basic To Do List | " + baseTitle,
