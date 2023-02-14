@@ -1,4 +1,5 @@
 import { AddItemButton } from "../components/addItemButton.js";
+import { reloadAllItemsButton } from "../components/reloadOllProducts.js";
 
 // Create a "close" button and append it to each list item
 var myNodelist = document.getElementsByTagName("LI");
@@ -34,6 +35,10 @@ const addBtn = document.getElementById('addNewItemBtn');
 const addBtnComponent = new AddItemButton(addBtn);
 addBtn.addEventListener('click', newElement);
 
+const reloadAllItemsBtn = document.getElementById('reloadAllItemsBtn');
+const reloadAllItemsBtnComponent = new reloadAllItemsButton(reloadAllItemsBtn);
+
+
 function newElement() {
   var li = document.createElement("li");
   var inputValue = document.getElementById("myInput").value;
@@ -52,10 +57,14 @@ function newElement() {
   span.appendChild(txt);
   li.appendChild(span);
 
-  for (i = 0; i < close.length; i++) {
-    close[i].onclick = function() {
+  // for (i = 0; i < close.length; i++) {
+  //   close[i].onclick = function() {
+  //     var div = this.parentElement;
+  //     div.style.display = "none";
+  //   }
+  // }
+  close[close.length -1].onclick = function() {
       var div = this.parentElement;
       div.style.display = "none";
-    }
   }
 }

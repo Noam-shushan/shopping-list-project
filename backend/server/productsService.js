@@ -18,7 +18,7 @@ export class ProductStore {
     }
 
     getAllProducts() {
-        return loadData('products');
+        return loadData('product');
     }
 
     getProduct(id) {

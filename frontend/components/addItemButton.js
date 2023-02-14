@@ -21,7 +21,7 @@ export class AddItemButton {
         request.open("POST", "/products",true);
 
         request.onload = () => {
-            console.log("success to add new item" + inputValue);
+            console.log("success to add new item " + inputValue);
         };
         request.onerror = () => {
             console.log(request.responseText);
