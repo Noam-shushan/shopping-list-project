@@ -14,17 +14,19 @@ export class AddItemButton {
     loadMore() {
         this.element.classList.add("loading");
         this.element.disabled = true;
+        var inputValue = document.getElementById("myInput").value;
+
 
         let request = new FXMLHttpRequest();
         request.open("POST", "/products",true);
 
         request.onload = () => {
-            alert("success to add new item");
+            console.log("success to add new item" + inputValue);
         };
         request.onerror = () => {
             console.log(request.responseText);
         };
-        var inputValue = document.getElementById("myInput").value;
+
         request.send(inputValue);
 
         this.element.classList.remove("loading");

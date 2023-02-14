@@ -26,7 +26,8 @@ export class ProductStore {
     }
 
     addProduct(product) {
-        saveData('product', product);
+        var newProduct = new Product(product, false);
+        saveData('product', newProduct);
     }
 }
 

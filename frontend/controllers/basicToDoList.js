@@ -34,8 +34,6 @@ const addBtn = document.getElementById('addNewItemBtn');
 const addBtnComponent = new AddItemButton(addBtn);
 addBtn.addEventListener('click', newElement);
 
-
-
 function newElement() {
   var li = document.createElement("li");
   var inputValue = document.getElementById("myInput").value;
