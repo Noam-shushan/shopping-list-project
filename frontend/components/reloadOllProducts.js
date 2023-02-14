@@ -1,5 +1,6 @@
 import { FXMLHttpRequest } from "../fajax/fajax.js";
 import { DeleteItemButton } from "../components/deleteItemButton.js";
+import { UpdateItem } from "../components/updateItem.js";
 
 
 export class reloadAllItemsButton {
@@ -29,6 +30,7 @@ export class reloadAllItemsButton {
                     return;
                 }
                 var li = document.createElement("li");
+                new UpdateItem(li)
                 var t = document.createTextNode(element.name);
                 li.appendChild(t);
                 document.getElementById("myUL").appendChild(li);
@@ -37,6 +39,11 @@ export class reloadAllItemsButton {
                 span.className = "close";
                 span.appendChild(txt);
                 li.appendChild(span);
+
+                if(element.in_cart){
+                    li.classList.toggle('checked');
+                }
+
                 var close = document.getElementsByClassName("close");
                 close[close.length -1].onclick = function() {
                     var div = this.parentElement;

@@ -1,7 +1,7 @@
 import { FXMLHttpRequest } from "../fajax/fajax.js";
 
 
-export class AddItemButton {
+export class UpdateItem {
     /**
      * @param {HTMLElement} element 
      */
@@ -13,20 +13,19 @@ export class AddItemButton {
     loadMore() {
         this.element.classList.add("loading");
         this.element.disabled = true;
-        var inputValue = document.getElementById("myInput").value;
-
+        var updatedItemValue = this.element.innerText.slice(0,-2);
 
         let request = new FXMLHttpRequest();
-        request.open("POST", "/products",true);
+        request.open("PUT", "/products",true);
 
         request.onload = () => {
-            console.log("success to add new item " + inputValue);
+            console.log("success to update the item: " + updatedItemValue);
         };
         request.onerror = () => {
             console.log(request.responseText);
         };
 
-        request.send(inputValue);
+        request.send(updatedItemValue);
 
         this.element.classList.remove("loading");
         this.element.disabled = false;

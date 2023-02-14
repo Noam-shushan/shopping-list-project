@@ -1,6 +1,7 @@
 import { AddItemButton } from "../components/addItemButton.js";
 import { reloadAllItemsButton } from "../components/reloadOllProducts.js";
 import { DeleteItemButton } from "../components/deleteItemButton.js";
+import { UpdateItem } from "../components/updateItem.js";
 
 // Create a "close" button and append it to each list item
 var myNodelist = document.getElementsByTagName("LI");
@@ -31,6 +32,12 @@ list.addEventListener('click', function(ev) {
   }
 }, false);
 
+for (const item of document.getElementsByTagName("LI")) {
+    new UpdateItem(item);
+}
+
+
+
 // Create a new list item when clicking on the "Add" button
 const addBtn = document.getElementById('addNewItemBtn');
 const addBtnComponent = new AddItemButton(addBtn);
@@ -42,6 +49,7 @@ const reloadAllItemsBtnComponent = new reloadAllItemsButton(reloadAllItemsBtn);
 
 function newElement() {
   var li = document.createElement("li");
+  new UpdateItem(li)
   var inputValue = document.getElementById("myInput").value;
   var t = document.createTextNode(inputValue);
   li.appendChild(t);

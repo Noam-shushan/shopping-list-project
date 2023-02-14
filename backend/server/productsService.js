@@ -30,6 +30,18 @@ export class ProductStore {
         var newProduct = new Product(product, false);
         saveData('product', newProduct);
     }
+
+    updateProduct(product) {
+        let item = 'product/' + product;
+        let data = loadData(item);
+        deleteItem(item)
+        if (data.in_cart === true) {
+            data.in_cart = false;
+        } else
+            data.in_cart = true;
+
+        saveData('product', data);
+    }
 }
 
 

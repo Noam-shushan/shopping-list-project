@@ -41,7 +41,12 @@ function getCollection(collectionName) {
 export function loadData(fullId) {
     let splitId = fullId.split('/');
     if (splitId.length === 2) {
-        return localStorage.getItem(fullId);
+        let collection = getCollection(splitId[0]);
+        for (let i = 0; i < collection.length; i++) {
+            let record = JSON.parse(localStorage.getItem(`${splitId[0]}/${collection[i]}`));
+            if ( record !== null && record.name === splitId[1]) 
+                return record
+            }
     }
     else if (splitId.length === 1) {
         let collectionName = splitId[0];
