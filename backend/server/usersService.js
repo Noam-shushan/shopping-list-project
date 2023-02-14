@@ -27,7 +27,11 @@ export class UserStore {
     }
 
     addUser(user) {
-        saveData('users', user);
+        let username = user.split('%')[0]
+        let password =  user.split('%')[1]
+        let newUser = new User(username,'',password)
+
+        saveData('users', newUser);
     }
 }
 

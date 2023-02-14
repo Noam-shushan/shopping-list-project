@@ -1,5 +1,6 @@
 import { LoadButton } from '../components/LoadButton.js';
 import { LoginButton } from '../components/loginBtn.js';
+import { SignUpButton } from '../components/signup.js'
 
 
 const loadBtn = document.getElementById('loadBtn');
@@ -11,3 +12,7 @@ alert.addEventListener('click', () => {
 
 const loginBtn = document.getElementById('loginBtn');
 const loginBtnComponent = new LoginButton(loginBtn);
+
+const SignUpBtn = document.getElementById('signUpBtn')
+const SignUpBtnComponent = new SignUpButton(SignUpBtn)
+
