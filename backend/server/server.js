@@ -1,9 +1,11 @@
 import { UserStore } from "./usersService.js";
+import { ProductStore } from "./productsService.js";
 import { Request } from "../../utils/Request.js";
 import { HttpResponse } from "../../utils/HttpResponse.js";
 
 const urls = {
     "/users": new UserStore(),
+    "/products": new ProductStore()
 }
 
 /**

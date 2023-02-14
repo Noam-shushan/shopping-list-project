@@ -1,6 +1,7 @@
 import { FXMLHttpRequest } from "../fajax/fajax.js";
 
-export class LoadButton {
+
+export class AddItemButton {
     /**
      * Creates a new LoadButton component and bind it to the given element
      * @param {HTMLElement} element 
@@ -15,19 +16,16 @@ export class LoadButton {
         this.element.disabled = true;
 
         let request = new FXMLHttpRequest();
-        request.open("GET", "/users",true);
+        request.open("POST", "/products",true);
 
         request.onload = () => {
-            let data = JSON.parse(request.responseText);
-            console.log(data);
-            let last_user = data[data.length - 1];
-            document.getElementById("userDiv").innerHTML = last_user["name"];
+            alert("success to add new item");
         };
         request.onerror = () => {
             console.log(request.responseText);
         };
-
-        request.send();
+        var inputValue = document.getElementById("myInput").value;
+        request.send(inputValue);
 
         this.element.classList.remove("loading");
         this.element.disabled = false;

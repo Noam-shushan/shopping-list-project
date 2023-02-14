@@ -28,7 +28,10 @@ export class HttpResponse {
      * @param {*} data 
      */
     ok(data) {
-        const jsonData = JSON.stringify(data);
+        const jsonData = "";
+        if (data !== undefined) {
+            jsonData = JSON.stringify(data);
+        }
         let response = STATUS_CODE[200]
             + "Content-Type: application/json\r\n"
             + `Date: ${new Date().toString()}\r\n`

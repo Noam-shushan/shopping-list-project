@@ -1,3 +1,5 @@
+import { AddItemButton } from "../components/addItemButton.js";
+
 // Create a "close" button and append it to each list item
 var myNodelist = document.getElementsByTagName("LI");
 var i;
@@ -29,7 +31,9 @@ list.addEventListener('click', function(ev) {
 
 // Create a new list item when clicking on the "Add" button
 const addBtn = document.getElementById('addNewItemBtn');
+const addBtnComponent = new AddItemButton(addBtn);
 addBtn.addEventListener('click', newElement);
+
 
 
 function newElement() {
