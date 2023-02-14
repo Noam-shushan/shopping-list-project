@@ -24,6 +24,10 @@ export class reloadAllItemsButton {
             let allProducts = JSON.parse(request.responseText);
             
             allProducts.forEach(element => {
+                if (element === undefined || element === null || element === ""  || element.name === " ")
+                {
+                    return;
+                }
                 var li = document.createElement("li");
                 var t = document.createTextNode(element.name);
                 li.appendChild(t);

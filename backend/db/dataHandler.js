@@ -60,7 +60,7 @@ export function deleteItem(fullId) {
     let collection = getCollection(splitId[0]);
     for (let i = 0; i < collection.length; i++) {
         let record = JSON.parse(localStorage.getItem(`${splitId[0]}/${collection[i]}`));
-        if ( record.name === splitId[1]) 
+        if ( record !== null && record.name === splitId[1]) 
             localStorage.removeItem(`${splitId[0]}/${collection[i]}`);
         }
 }
