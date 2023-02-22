@@ -1,3 +1,5 @@
+const crypt = require('crypto');
+
 function delay(ms) {
     var start = Date.now(),
         now = start;
@@ -19,12 +21,27 @@ console.log("start");
 // }).then((msg) => {
 //     console.log(msg);
 // });
-function myonload(Content ,callback){
+function myonload(Content, callback) {
     setTimeout(() => {
         callback();
         console.log("Now we have th data " + Content);
     }, 3000);
 }
 
-myonload("hello word!",downloading);
-console.log("end");
+function generateId() {
+    const newID = crypt.randomUUID();
+    return newID.replaceAll('/', '');
+}
+
+const users = []
+for (let i = 0; i < 10; i++) {
+    users.push({
+        id: generateId(),
+        name: "user" + i,
+        email: "user" + i + "@gmail.com",
+    });
+}
+
+
+
+

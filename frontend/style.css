@@ -1,0 +1,92 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+
+.singup-form h2 {
+    color: #a0b3b0;
+    font-size: 2rem;
+    font-weight: 3rem;
+    letter-spacing: 0.2rem;
+    white-space: nowrap;
+    text-align: center;
+    margin: 1rem 0;
+    text-transform: uppercase;
+}
+
+.singup-form input {
+    width: 80%;
+    padding: 1em 2em;
+    margin: 8px 0;
+    box-sizing: border-box;
+    background: transparent;
+    color: #a0b3b0;
+    font-size: 1rem;
+    transition: all 0.3s ease-in-out;
+    border: 1px solid #a0b3b0;
+}
+
+.singup-form button {
+    background-color: #64b798;
+    color: white;
+    padding: 0.5rem 1rem;
+    margin: 0.5rem 0;
+    font-size: 2rem;
+    border: none;
+    border-radius: 5px;
+    z-index: 3;
+    cursor: pointer;
+    font-weight: 3rem;
+    letter-spacing: 0.2rem;
+}
+
+
+.singup-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.teb {
+    padding: 1rem 2rem;
+}
+
+.login-register {
+    background-color: #13232f;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+    z-index: 2;
+    min-width: 80%;
+    min-height: 80%;
+}
+
+.login-warper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: azure;
+    height: 100vh;
+    width: 100vw;
+}
+
+.login-header-text {
+    color: #63bdb0;
+    font-size: 2rem;
+    /* some shiny text */
+    text-shadow: 0 0 10px #b8e6df, 0 0 20px #9ed9d0, 0 0 30px #3e6c65, 0 0 40px #c5f2eb, 0 0 50px #0a9f88, 0 0 60px #d5ebe8, 0 0 70px #93aba7;
+    font-weight: 3rem;
+    letter-spacing: 0.1rem;
+    white-space: nowrap;
+    text-align: center;
+    margin: 1rem 0;
+    text-transform: uppercase;
+}

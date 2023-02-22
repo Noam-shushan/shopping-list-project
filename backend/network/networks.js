@@ -2,9 +2,9 @@ import { Server } from "../server/server.js";
 
 
 /**
- * send the request to the server
- * @param {*} req 
- * @returns 
+ * send async the request to the server
+ * @param {string} req the request 
+ * @returns {string} response
  */
 export function sendAsync(req, callback) {
     setTimeout(() => {
@@ -14,6 +14,11 @@ export function sendAsync(req, callback) {
     }, 3000)
 }
 
+/**
+ * send sync the request to the server
+ * @param {string} req the request 
+ * @returns {string} response
+ */
 export function send(req) {
     const server = new Server();
     const res = server.hendleRequest(req);

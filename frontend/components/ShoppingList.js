@@ -67,7 +67,7 @@ template.innerHTML = `
     </div>
 `;
 
-class ShoppingList extends HTMLElement {
+export class ShoppingList extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
@@ -136,5 +136,3 @@ class ShoppingList extends HTMLElement {
         });
     }
 }
-
-customElements.define('shopping-list', ShoppingList);

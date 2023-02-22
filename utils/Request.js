@@ -9,6 +9,8 @@ export class Request {
         if (this.method === "POST") {
             this.body = lines[lines.length - 1];
         }
+        this.parameters = this.getParameters();
+        this.urlWitoutParameters = this.url.split("?")[0];
     }
 
     valideteRequest(lines) {
@@ -38,5 +40,20 @@ export class Request {
                 this.headers[header[0]] = header[1];
             }
         }
+    }
+
+    getParameters() {
+        let parameters = {};
+        if (this.method === "GET") {
+            let url = this.url.split("?");
+            if (url.length > 1) {
+                let params = url[1].split("&");
+                params.forEach(param => {
+                    let [key, value] = param.split("=");
+                    parameters[key] = value;
+                });
+            }
+        }
+        return parameters;
     }
 }

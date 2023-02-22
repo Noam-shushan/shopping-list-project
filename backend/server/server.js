@@ -1,10 +1,14 @@
-import { UserStore } from "./usersService.js";
 import { Request } from "../../utils/Request.js";
+import { ModelRepository } from "./ModelRepository.js";
 import { HttpResponse } from "../../utils/HttpResponse.js";
+import { LoginSingup } from "./Login.js";
 
+// the urls and the services
 const urls = {
-    "/users": new UserStore(),
-    "/stores": null,
+    "/api/users": new ModelRepository('users'),
+    "/api/products": new ModelRepository('products'),
+    "/api/shopping-lists": new ModelRepository('shopping-lists'),
+    '/api/login-singup': new LoginSingup(),
 }
 
 /**
@@ -16,7 +20,8 @@ export class Server {
     }
 
     /**
-     *  
+     * Handle the request and create the response
+     * @param {string} httpRequest
      */
     hendleRequest(httpRequest) {
         const http = new HttpResponse();
@@ -28,13 +33,20 @@ export class Server {
             return http.badRequest(error);
         }
 
-        const service = urls[request.url];
+        const service = urls[request.urlWitoutParameters];
         if (!service) { // if the url is not found, send 404
-            return http.notFound(`404 Not Found\nthe url: '${request.url}'`);
+            return http.notFound(`404 Not Found\nthe url: '${request.urlWitoutParameters}'`);
         }
         try {
             const method = service.route[request.method]; // GET, POST, PUT, DELETE
-            let responseContent = method(request.body);
+
+            let responseContent = '';
+            if (request.method === 'GET' || request.method === 'DELETE') {
+                responseContent = method(request.parameters)
+            } else {
+                responseContent = method(JSON.parse(request.body));
+            }
+
             return http.ok(responseContent);
         }
         catch (error) {

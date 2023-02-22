@@ -68,7 +68,7 @@ template.innerHTML = `
     </div>
 `;
 
-class ListItem extends HTMLElement {
+export class ListItem extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
@@ -166,5 +166,3 @@ class ListItem extends HTMLElement {
         }
     }
 }
-
-customElements.define('list-item', ListItem);
