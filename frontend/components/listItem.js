@@ -1,27 +1,28 @@
-let template = document.createElement('template');
+const template = document.createElement('template');
 template.innerHTML = `
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         .list-item {
-            background: #f4f4f4;
-            border-bottom: #ccc 1px dotted;
+            background: #202123;
+            border-bottom: #ccc 1px solid;
+            color: white;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 1em; 
-            z-index: 5;
-            border-radius: 5px;
-            padding: 0 0.2rem;   
+            gap: 1em;
+            padding: 0.1em 0.5em;
         }
+
         .list-item:hover {
-            background: #e0ebeb;
+            background-color: #60646b;
+            cursor: pointer;
         }
 
         .details {
             display: flex;
             flex-direction: row;
-            justify-content: space-between;
             align-items: center;
-            gap: 2em;
+            gap: 0.5em;
         }
 
         .actions{
@@ -36,133 +37,57 @@ template.innerHTML = `
         button {
             border: none;
             background: none;
-            font-size: 1.2em;
+            color: white;
+            font-size: 1em;
             cursor: pointer;
-        }
-        
-        svg {
-            cursor: pointer;
-            width: 1.2em;
-            height: 1.2em;
-        }
-
-        .dragging {
-            opacity: 0.5;
         }
     </style>
     <div class="list-item">
         <div class="details">
-            <p><slot name="product"/></p>
-            <p><slot name="amount"/></p>
+            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+            <p><slot name="listName"/></p>
         </div>
 
         <div class="actions">
-            <button id="inc">+</button>
-            <button id="dec">-</button>
-            <svg id="delete" xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-circle" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                <circle cx="12" cy="12" r="9" />
-            </svg>
+            <button id="remove">X</button>
         </div>
-
     </div>
 `;
 
+/**
+ * this is a custom element that represents a list item
+ */
 export class ListItem extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
         this.shadowRoot.appendChild(template.content.cloneNode(true));
-        this.shadowRoot.querySelector('#delete').addEventListener('click', () => {
-            this.fireOnDeleteEvent();
+        this.shadowRoot.querySelector('#remove').addEventListener('click', () => {
+            this.dispatchEvent(new CustomEvent('onDelete', { detail: this.listName }));
             this.remove();
         });
-        this.shadowRoot.querySelector('#inc').addEventListener('click', () => {
-            this.amount++;
-        });
-        this.shadowRoot.querySelector('#dec').addEventListener('click', () => {
-            if (this.amount > 0) {
-                this.amount--;
-            }
-        });
     }
 
-    get product() {
-        return this.getAttribute('product');
+    get listName() {
+        return this.getAttribute('listName');
     }
 
-    set product(value) {
-        this.setAttribute('product', value);
-    }
-
-    get amount() {
-        let amount = this.getAttribute('amount');
-        if (!amount || amount < 1) {
-            amount = 1;
-        }
-        if (isNaN(amount)) {
-            amount = 1;
-        }
-        return Number(amount);
-    }
-
-    set amount(value) {
-        if (this.amount !== value) {
-            this.setAttribute('amount', value);
-            this.fireOnAmountChange();
-        }
-    }
-
-    fireOnAmountChange() {
-        const event = new CustomEvent('onAmountChange', {
-            detail: {
-                amount: this.amount,
-                product: this.product
-            },
-        });
-        this.dispatchEvent(event);
-    }
-
-    static get observedAttributes() {
-        return ['product', 'amount'];
-    }
-
-    render() {
-        this.shadowRoot.querySelector('slot[name="product"]').innerHTML = this.product;
-        if (this.amount > 1) {
-            this.shadowRoot.querySelector('slot[name="amount"]').innerHTML = 'x' + this.amount;
-        } else {
-            this.shadowRoot.querySelector('slot[name="amount"]').innerHTML = '';
-        }
+    set listName(value) {
+        this.setAttribute('listName', value);
     }
 
     connectedCallback() {
-        this.render();
+        this.shadowRoot.querySelector('slot[name="listName"]').textContent = this.listName;
     }
 
-    fireOnDeleteEvent() {
-        const event = new CustomEvent('onDelete', {
-            detail: {
-                product: this.product
-            },
-            bubbles: true,
-            composed: true
-        });
-        this.dispatchEvent(event);
+    static get observedAttributes() {
+        return ['listName'];
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
-        switch (name) {
-            case 'product':
-                this.shadowRoot.querySelector('slot[name="product"]').innerHTML = this.product;
-                break;
-            case 'amount':
-                if (this.amount > 1) {
-                    this.shadowRoot.querySelector('slot[name="amount"]').innerHTML = 'x' + this.amount;
-                } else {
-                    this.shadowRoot.querySelector('slot[name="amount"]').innerHTML = '';
-                }
-                break;
+        if (name === 'listName') {
+            this.listName = newValue;
+            this.shadowRoot.querySelector('slot[name="listName"]').textContent = newValue;
         }
     }
 }

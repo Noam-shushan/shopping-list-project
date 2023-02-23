@@ -1,4 +1,27 @@
-<div class="continer">
-    <h1>Home</h1>
-    <shopping-list listName="soper market"></shopping-list>
+<div class="home-continer">
+    <div class="left-menu-bar">
+        <button id="add-list-btn" class="menu-button icon-button">
+            <p>+</p>
+            <p>New list</p </div>
+        </button>
+        <div class="lists-continer">
+            <input class="text-box" style="display: none;" type="text" id="list-name"
+                placeholder="Enter list name"></input>
+            <div id="lists" class="lists-continer"></div>
+        </div>
+        <div class="menu-bar-footer">
+            <button id="logout-btn" class="menu-button icon-button">
+                <i class="fa fa-sign-out" aria-hidden="true"></i>
+                <p>Log out</p>
+            </button>
+        </div>
+    </div>
+    <div class="right-side">
+        <header class="top-memu-bar">
+            <a class="nav-link" href="#">About</a>
+            <a class="nav-link" href="#">Contact</a>
+            <a class="nav-link" href="#">Statictics</a>
+        </header>
+        <shopping-list listName="soper market"></shopping-list>
+    </div>
 </div>

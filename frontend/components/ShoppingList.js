@@ -7,7 +7,7 @@ template.innerHTML = `
             justify-content: flex-end;
             width: 100%;
             border: 1px solid #ccc;
-            height: 100vh;
+            height: 100%;
         }
 
         .list {
@@ -91,7 +91,7 @@ export class ShoppingList extends HTMLElement {
 
     addNewItemOnEnter(event) {
         if (event.key === 'Enter') {
-            const newItem = document.createElement('list-item');
+            const newItem = document.createElement('product-item');
             newItem.product = event.target.value;
             event.target.value = '';
             const list = this.shadowRoot.querySelector('.list');
@@ -101,12 +101,23 @@ export class ShoppingList extends HTMLElement {
     }
 
     addNewItem() {
-        const newItem = document.createElement('list-item');
+        const newItem = document.createElement('product-item');
         newItem.product = this.shadowRoot.querySelector('#new-product').value;
         this.shadowRoot.querySelector('#new-product').value = '';
         const list = this.shadowRoot.querySelector('.list');
         list.appendChild(newItem);
         this.fireOnNewItemEvent(newItem);
+    }
+
+    setProducts(products) {
+        const list = this.shadowRoot.querySelector('.list');
+        list.innerHTML = '';
+        products.forEach(product => {
+            const newItem = document.createElement('product-item');
+            newItem.product = product.name;
+            newItem.amount = product.amount;
+            list.appendChild(newItem);
+        });
     }
 
     fireOnNewItemEvent(newItem) {

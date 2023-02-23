@@ -23,58 +23,7 @@ const handleLocation = async () => {
     document.getElementById("main-content").innerHTML = html;
 
     document.title = route.title;
-
-    // set the page script
-    loadScript(route);
-
-    // set the page style sheet
-    loadCss(route);
 };
-
-/**
- * Load the script of the page,
- * remove the previous script if exists
- * @param {*} route the route object
- */
-function loadScript(route) {
-    // Remove the previous script
-    const script = document.querySelector("#currentScript");
-    if (script) {
-        document.head.removeChild(script)
-    }
-
-    // Load the new script
-    if (route.script) {
-        const script = document.createElement("script");
-        script.src = route.script;
-        script.type = "module";
-        script.defer = true;
-        script.id = "currentScript";
-        document.head.appendChild(script);
-    }
-}
-
-/**
- * Load the style sheet of the page,
- * remove the previous style sheet if exists
- * @param {*} route the route object
- */
-function loadCss(route) {
-    // Remove the previous style sheet
-    const previousStyle = document.querySelector('#currentStyle');
-    if (previousStyle) {
-        document.head.removeChild(previousStyle);
-    }
-
-    // Load the new style sheet
-    if (route.style) {
-        const styleLink = document.createElement('link');
-        styleLink.rel = 'stylesheet';
-        styleLink.href = route.style;
-        styleLink.id = 'currentStyle';
-        document.head.appendChild(styleLink);
-    }
-}
 
 window.addEventListener("hashchange", handleLocation);
 

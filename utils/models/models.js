@@ -38,6 +38,9 @@ export class User {
     }
 }
 
+/**
+ * This is the model for the shopping list.
+ */
 export class ShoppingList {
     constructor(name, products) {
         this.id = '';
@@ -52,6 +55,9 @@ export class ShoppingList {
     }
 }
 
+/**
+ * This is the model for the product.
+ */
 export class Product {
     constructor(name, category, amount) {
         this.id = '';

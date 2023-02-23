@@ -2,8 +2,11 @@ import { User } from "../../utils/models/models.js";
 import * as currentUserHandler from "./CurrentUserHandler.js";
 import { FXMLHttpRequest } from "../fajax/fajax.js";
 
+document.addEventListener('DOMContentLoaded', () => {
+    main();
+});
 
-const main = (() => {
+function main() {
     // listen to the submit event on the login and signup forms
     document.addEventListener("submit", (event) => {
         event.preventDefault();
@@ -19,7 +22,7 @@ const main = (() => {
         }
         // navigate to the home page 
     });
-})();
+}
 
 /**
  * Login function 
