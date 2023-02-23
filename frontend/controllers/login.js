@@ -3,7 +3,7 @@ import * as currentUserHandler from "./CurrentUserHandler.js";
 import { FXMLHttpRequest } from "../fajax/fajax.js";
 
 
-function main() {
+const main = (() => {
     // listen to the submit event on the login and signup forms
     document.addEventListener("submit", (event) => {
         event.preventDefault();
@@ -19,9 +19,7 @@ function main() {
         }
         // navigate to the home page 
     });
-}
-
-main();
+})();
 
 /**
  * Login function 
@@ -75,12 +73,13 @@ function signup() {
     let userData = {};
     fajax.onload = () => {
         userData = JSON.parse(fajax.responseText);
-        console.log(`new user registered: ${email}`);
+        console.log(`new user registered: ${userData.email}`);
         currentUserHandler.setCurrentUser(userData);
-        alert(`Welcome ${newUser}!`);
+        alert(`Welcome! ${userData.name}`);
         clearForm();
         window.location.href = "/";
     };
+
     fajax.onerror = () => {
         alert(`Error: ${fajax.responseText}, status code: ${fajax.status}`);
         clearForm();

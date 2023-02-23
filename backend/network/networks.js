@@ -1,4 +1,4 @@
-import { Server } from "../server/server.js";
+import { Server } from "../server/Server.js";
 
 
 /**

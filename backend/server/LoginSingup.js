@@ -11,10 +11,6 @@ const postData = {
     }
 }
 
-const userRepository = new ModelRepository('users');
-const productsRepository = new ModelRepository('products');
-const shoppingListsRepository = new ModelRepository('shopping-lists');
-
 /**
  * Login and signup
  */
@@ -26,6 +22,9 @@ export class LoginSingup {
             "PUT": null,
             "DELETE": null,
         }
+        this.userRepository = new ModelRepository('users');
+        this.productsRepository = new ModelRepository('products');
+        this.shoppingListsRepository = new ModelRepository('shopping-lists');
     }
 
     /**
@@ -34,13 +33,15 @@ export class LoginSingup {
      * @returns {User} new user 
      */
     signup(parameters) {
-        const users = userRepository.get({});
-        const user = users.find(user => user.email === email);
+        const user = this.findUserByEmail(parameters.email);
         if (user) {
             throw "Email already exist";
         }
-        const newUser = new User(parameters.name, parameters.email, parameters.password);
-        userRepository.add(newUser);
+        const newUser = this.userRepository.add(new User(
+            parameters.name,
+            parameters.email,
+            parameters.password)
+        );
         return newUser;
     }
 
@@ -55,24 +56,33 @@ export class LoginSingup {
      * @returns {User} the user with his shopping lists and products  
      */
     login(parameters) {
-        const users = userRepository.get({});
-        const currentUser = users.find(user => user.email === parameters.email);
-        if (!currentUser) {
+        const user = this.findUserByEmail(parameters.email);
+        if (!user) {
             throw "User not found";
         }
-        if (currentUser.password !== parameters.password) {
+        if (user.password !== parameters.password) {
             throw "Wrong password";
         }
 
-        const products = productsRepository.get({});
-        const shoppingLists = shoppingListsRepository.get({});
+        return this.fullUser(user);
+    }
 
-        currentUser.shoppingLists = shoppingLists.filter(list => list.userId === currentUser.id);
-        currentUser.shoppingLists.forEach(list => {
+    findUserByEmail(email) {
+        const users = this.userRepository.get({});
+        const user = users.find(user => user.email === email);
+        return user;
+    }
+
+    fullUser(user) {
+        const products = this.productsRepository.get({});
+        const shoppingLists = this.shoppingListsRepository.get({});
+
+        user.shoppingLists = shoppingLists.filter(list => list.userId === user.id);
+        user.shoppingLists.forEach(list => {
             list.products = products.filter(product => product.listId === list.id);
         });
 
-        return currentUser;
+        return user;
     }
 }
 

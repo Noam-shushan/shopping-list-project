@@ -1,15 +1,8 @@
 import { Request } from "../../utils/Request.js";
 import { ModelRepository } from "./ModelRepository.js";
-import { HttpResponse } from "../../utils/HttpResponse.js";
-import { LoginSingup } from "./Login.js";
+import * as http from "../../utils/HttpResponse.js";
+import { LoginSingup } from "./LoginSingup.js";
 
-// the urls and the services
-const urls = {
-    "/api/users": new ModelRepository('users'),
-    "/api/products": new ModelRepository('products'),
-    "/api/shopping-lists": new ModelRepository('shopping-lists'),
-    '/api/login-singup': new LoginSingup(),
-}
 
 /**
  * The server class
@@ -17,6 +10,13 @@ const urls = {
  */
 export class Server {
     constructor() {
+        // the urls and the services
+        this.urls = {
+            "/api/users": new ModelRepository('users'),
+            "/api/products": new ModelRepository('products'),
+            "/api/shopping-lists": new ModelRepository('shopping-lists'),
+            '/api/login-singup': new LoginSingup(),
+        }
     }
 
     /**
@@ -24,7 +24,6 @@ export class Server {
      * @param {string} httpRequest
      */
     hendleRequest(httpRequest) {
-        const http = new HttpResponse();
         let request = null;
         try { //  create request object, if the request is invalid, send 400
             request = new Request(httpRequest);
@@ -33,7 +32,7 @@ export class Server {
             return http.badRequest(error);
         }
 
-        const service = urls[request.urlWitoutParameters];
+        const service = this.urls[request.urlWitoutParameters];
         if (!service) { // if the url is not found, send 404
             return http.notFound(`404 Not Found\nthe url: '${request.urlWitoutParameters}'`);
         }
@@ -42,9 +41,9 @@ export class Server {
 
             let responseContent = '';
             if (request.method === 'GET' || request.method === 'DELETE') {
-                responseContent = method(request.parameters)
+                responseContent = method.call(service, request.parameters);
             } else {
-                responseContent = method(JSON.parse(request.body));
+                responseContent = method.call(service, request.body);
             }
 
             return http.ok(responseContent);

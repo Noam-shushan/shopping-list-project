@@ -23,6 +23,7 @@ export class ModelRepository {
         }
         recoed.id = db.generateId();
         db.saveData(`${this.collectionName}/${recoed.id}`, recoed);
+        return recoed;
     }
 
     update(recoed) {

@@ -7,7 +7,8 @@ export class Request {
         [this.method, this.url] = this.valideteRequest(lines);
         this.setHeaders(lines);
         if (this.method === "POST") {
-            this.body = lines[lines.length - 1];
+            this.jsonBody = lines[lines.length - 1];
+            this.body = JSON.parse(this.jsonBody);
         }
         this.parameters = this.getParameters();
         this.urlWitoutParameters = this.url.split("?")[0];
