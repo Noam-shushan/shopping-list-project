@@ -1,13 +1,12 @@
 let template = document.createElement('template');
 template.innerHTML = `
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;600;700;800;900&display=swap');
         .chat {
             display: flex;
+            justify-content: flex-start;
             flex-direction: column;
-            justify-content: flex-end;
-            width: 100%;
-            border: 1px solid #ccc;
-            height: 100%;
+            border: 1px solid #ccc;          
         }
 
         .list {
@@ -17,25 +16,22 @@ template.innerHTML = `
             border-radius: 5px;
             padding: 0.1em;
             scroll-behavior: smooth;
-            overflow-y: scroll;
-
         }
 
         .new-item {
             display: flex;
             flex-direction: row;
             align-items: center;
-
             background: #a7bcb9;
             border-top: 2px solid #24527a;
             padding: 0.5em;
-            margin-top: 0.5em;
+            margin-bottom: auto;
         }
 
         input[type="text"] {
             border: none;
             background: inherit;
-            font-size: 1.5em;
+            font-size: 1em;
             width: 100%;
             font-family: 'Nunito', sans-serif;
             color: #24527a;
@@ -116,21 +112,44 @@ export class ShoppingList extends HTMLElement {
             const newItem = document.createElement('product-item');
             newItem.product = product.name;
             newItem.amount = product.amount;
+            newItem.addEventListener('onDelete', (event) => {
+                this.fireOnDeleteItemEvent(event.detail);
+            });
+            newItem.addEventListener('onAmountChange', (event) => {
+                this.fireOnAmountChangeEvent(event.detail);
+            });
             list.appendChild(newItem);
         });
     }
 
     fireOnNewItemEvent(newItem) {
         const onNewItemEvent = new CustomEvent('onNewItem', {
-            bubbles: true,
-            composed: true,
             detail: {
-                product: newItem.product,
+                name: newItem.product,
                 amount: newItem.amount,
-                listName: this.listName
             }
         });
         this.dispatchEvent(onNewItemEvent);
+    }
+
+    fireOnDeleteItemEvent(item) {
+        const onDeleteItemEvent = new CustomEvent('onDeleteItem', {
+            detail: {
+                name: item.product,
+                amount: item.amount,
+            }
+        });
+        this.dispatchEvent(onDeleteItemEvent);
+    }
+
+    fireOnAmountChangeEvent(item) {
+        const onAmountChangeEvent = new CustomEvent('onAmountChange', {
+            detail: {
+                name: item.product,
+                amount: item.amount,
+            }
+        });
+        this.dispatchEvent(onAmountChangeEvent);
     }
 
     dradAndDropItems() {

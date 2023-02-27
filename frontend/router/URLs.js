@@ -1,7 +1,7 @@
 const baseTitle = "Sopping List";
 
 export const urlHash = {
-    "/": {
+    home: {
         title: "Home | " + baseTitle,
         template: "/frontend/templates/home.html",
     },

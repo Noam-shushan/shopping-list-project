@@ -21,9 +21,6 @@ export class FXMLHttpRequest {
 
         /**
          * Returns the status-number of a request
-         * 200: "OK"
-         * 403: "Forbidden"
-         * 404: "Not Found"
          * @type {number}
          */
         this.status = 0;

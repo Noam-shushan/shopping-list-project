@@ -41,6 +41,11 @@ template.innerHTML = `
             font-size: 1em;
             cursor: pointer;
         }
+
+        .selected {
+            background-color: #60646b;
+            transition: background-color 0.5s;
+        }
     </style>
     <div class="list-item">
         <div class="details">
@@ -76,18 +81,46 @@ export class ListItem extends HTMLElement {
         this.setAttribute('listName', value);
     }
 
+    /**
+     * @returns {bool}
+     */
+    get isSelectet() {
+        return this.getAttribute('isSelected');
+    }
+
+    /**
+     * @param {bool} value
+     */
+    set isSelected(value) {
+        this.setAttribute('isSelected', value);
+
+    }
+
     connectedCallback() {
         this.shadowRoot.querySelector('slot[name="listName"]').textContent = this.listName;
+
+        if (this.isSelected) {
+            this.shadowRoot.querySelector('.list-item').classList.add('selected');
+        } else {
+            this.shadowRoot.querySelector('.list-item').classList.remove('selected');
+        }
     }
 
     static get observedAttributes() {
-        return ['listName'];
+        return ['listName', 'isSelected'];
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
         if (name === 'listName') {
             this.listName = newValue;
             this.shadowRoot.querySelector('slot[name="listName"]').textContent = newValue;
+        }
+        if (name === 'isSelected') {
+            if (newValue === 'true') {
+                this.shadowRoot.querySelector('.list-item').classList.add('selected');
+            } else {
+                this.shadowRoot.querySelector('.list-item').classList.remove('selected');
+            }
         }
     }
 }

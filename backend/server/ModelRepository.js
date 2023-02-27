@@ -1,5 +1,8 @@
 import * as db from "../db/dataHandler.js";
 
+/**
+ * This is genric class for any type of model to preform CRUD opertions
+ */
 export class ModelRepository {
     constructor(collectionName) {
         this.collectionName = collectionName;
@@ -11,6 +14,11 @@ export class ModelRepository {
         }
     }
 
+    /**
+     * Get all records or one record
+     * @param {*} parameters can be empty or have id
+     * @returns {Array} all records or one record
+     */
     get(parameters) {
         const id = parameters.id;
         const fullId = id ? `${this.collectionName}/${id}` : this.collectionName;
@@ -28,6 +36,7 @@ export class ModelRepository {
 
     update(recoed) {
         db.saveData(`${this.collectionName}/${recoed.id}`, recoed);
+        return recoed;
     }
 
     delete(parameters) {
@@ -35,6 +44,7 @@ export class ModelRepository {
         if (!id) {
             throw "Invalid id";
         }
-        db.deleteData(`${this.collectionName}/${id}`);
+        db.deleteRecord(`${this.collectionName}/${id}`);
+        return `Record ${this.collectionName}/${id} deleted`;
     }
 }

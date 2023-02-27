@@ -1,33 +1,66 @@
-import { FXMLHttpRequest } from '../fajax/fajax.js';
 import * as currentUserHandler from "./CurrentUserHandler.js";
-import { ShoppingList, Product } from '../../utils/models/models.js';
-import { ShoppingListControler } from './ShoppingListControler.js';
+import { ShoppingListsController } from './ShoppingListsController.js';
+import { FXMLHttpRequest } from "../fajax/FXMLHttpRequest.js";
 
+document.addEventListener('navigate', (event) => {
+    const page = event.detail;
+    if (page === 'home') {
+        main();
+    }
+});
 
-
-document.addEventListener('DOMContentLoaded', () => {
-    main();
+document.addEventListener('onreload', () => {
+    const currentUser = currentUserHandler.getCurrentUser();
+    if (!currentUser) {
+        window.location.hash = 'login';
+        return;
+    }
+    else {
+        let fajax = new FXMLHttpRequest();
+        fajax.open("GET", `/api/users/?id=${currentUser.id}`);
+        fajax.send();
+        fajax.onload = () => {
+            const user = JSON.parse(fajax.responseText);
+            currentUserHandler.setCurrentUser(user);
+        };
+    }
 });
 
 function main() {
+    const currentUser = currentUserHandler.getCurrentUser();
+    if (!currentUser) {
+        window.location.hash = 'login';
+        return;
+    }
+
+    const userName = document.querySelector('#user-name');
+    userName.innerHTML += currentUser.name;
+
+    if (currentUser.shoppingLists.length > 0) {
+        createShoppingListElemnt();
+    }
+
     const listsContainer = document.querySelector('#lists');
-    const lists = [
-        new ShoppingList('Lista 1', [
-            new Product('Pera', 'blabla', 2),
-            new Product('Manzana', 'blabla', 2),
-            new Product('Naranja', 'blabla', 3),
-        ]),
-        new ShoppingList('Lista 2', [
-            new Product('Milk', 'blabla', 2),
-            new Product('Bread', 'blabla', 2),
-            new Product('Eggs', 'blabla', 3),
-        ])
-    ];
-    const shoppingListControler = new ShoppingListControler(listsContainer, lists);
-    handleAddNewList(shoppingListControler);
+
+    const shoppingListsController = new ShoppingListsController(listsContainer, currentUser.shoppingLists);
+    handleAddNewList(shoppingListsController);
+
+    const logoutBtn = document.querySelector('#logout-btn');
+    logoutBtn.addEventListener('click', logout);
 }
 
-function handleAddNewList(shoppingListControler) {
+function createShoppingListElemnt() {
+    const soppingList = document.createElement('shopping-list');
+    const container = document.querySelector('.right-side');
+    container.appendChild(soppingList);
+    return soppingList;
+}
+
+/**
+ * Handle add new list button
+ * @param {ShoppingListsController} shoppingListControler 
+ */
+function handleAddNewList(shoppingListsController) {
     const addListBtn = document.querySelector('#add-list-btn');
     const listNameTextBox = document.querySelector('#list-name');
 
@@ -39,11 +72,27 @@ function handleAddNewList(shoppingListControler) {
     listNameTextBox.addEventListener('keyup', (event) => {
         if (event.key === 'Enter') {
             const listName = listNameTextBox.value;
-            shoppingListControler.addNewListToDom(listName, true);
+            shoppingListsController.addNewList(listName);
             listNameTextBox.value = '';
             listNameTextBox.style.display = 'none';
         }
     });
+
+    document.addEventListener('onNewList', (event) => {
+        if (shoppingListsController.lists.length === 1) {
+            createShoppingListElemnt();
+            shoppingListsController.rejesterToEvents();
+            shoppingListsController.currentList = shoppingListsController.lists[0];
+        }
+    });
+}
+
+/**
+ * Log out user
+ */
+function logout() {
+    currentUserHandler.clearCurrentUser();
+    window.location.hash = 'login';
 }
 
 

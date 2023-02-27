@@ -1,5 +1,6 @@
 import { Request } from "../../utils/Request.js";
 import { ModelRepository } from "./ModelRepository.js";
+import { UsersRepository } from "./UsersRepository.js";
 import * as http from "../../utils/HttpResponse.js";
 import { LoginSingup } from "./LoginSingup.js";
 
@@ -12,7 +13,7 @@ export class Server {
     constructor() {
         // the urls and the services
         this.urls = {
-            "/api/users": new ModelRepository('users'),
+            "/api/users": new UsersRepository(),
             "/api/products": new ModelRepository('products'),
             "/api/shopping-lists": new ModelRepository('shopping-lists'),
             '/api/login-singup': new LoginSingup(),
@@ -40,12 +41,11 @@ export class Server {
             const method = service.route[request.method]; // GET, POST, PUT, DELETE
 
             let responseContent = '';
-            if (request.method === 'GET' || request.method === 'DELETE') {
+            if (request.method.startsWith('GET') || request.method === 'DELETE') {
                 responseContent = method.call(service, request.parameters);
             } else {
                 responseContent = method.call(service, request.body);
             }
-
             return http.ok(responseContent);
         }
         catch (error) {

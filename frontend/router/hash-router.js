@@ -13,7 +13,7 @@ import { urlHash } from "./URLs.js";
 const handleLocation = async () => {
     let path = window.location.hash.replace("#", "");
     if (!path) {
-        path = "/"; // go home page by default
+        path = "login"; // go login page by default
     }
     // Get the route, or 404 if not found
     const route = urlHash[path] || urlHash[404];
@@ -23,8 +23,12 @@ const handleLocation = async () => {
     document.getElementById("main-content").innerHTML = html;
 
     document.title = route.title;
+    document.dispatchEvent(new CustomEvent("navigate", { detail: path }));
 };
 
-window.addEventListener("hashchange", handleLocation);
 
-handleLocation();
+document.addEventListener("DOMContentLoaded", () => {
+    window.addEventListener("hashchange", handleLocation);
+    handleLocation();
+});
+

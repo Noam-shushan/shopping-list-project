@@ -1,26 +1,33 @@
 import { User } from "../../utils/models/models.js";
 import * as currentUserHandler from "./CurrentUserHandler.js";
-import { FXMLHttpRequest } from "../fajax/fajax.js";
+import { FXMLHttpRequest } from "../fajax/FXMLHttpRequest.js";
 
-document.addEventListener('DOMContentLoaded', () => {
-    main();
+document.addEventListener('navigate', (event) => {
+    const page = event.detail;
+    if (page === 'login') {
+        main();
+    }
 });
 
+
 function main() {
-    // listen to the submit event on the login and signup forms
-    document.addEventListener("submit", (event) => {
-        event.preventDefault();
-        let currentUser = currentUserHandler.getCurrentUser();
-        if (currentUser) {
-            alert("You are already logged in!");
-            return;
-        }
-        if (event.target.matches("#login")) {
-            login();
-        } else if (event.target.matches("#signup")) {
-            signup();
-        }
-        // navigate to the home page 
+    const currentUser = currentUserHandler.getCurrentUser();
+    if (currentUser) {
+        alert("You are already logged in!");
+        window.location.hash = "home";
+        return;
+    }
+
+    const loginBtn = document.querySelector('#login-btn');
+    const signupBtn = document.querySelector('#signup-btn');
+
+    loginBtn.addEventListener('click', () => {
+        console.log("login");
+        login();
+    });
+
+    signupBtn.addEventListener('click', () => {
+        signup();
     });
 }
 
@@ -45,7 +52,7 @@ function login() {
         currentUserHandler.setCurrentUser(userData);
         alert(`Welcome back ${userData.name}!`);
         clearForm();
-        window.location.href = "/";
+        window.location.hash = "home";
     };
 
     fajax.onerror = () => {
@@ -80,7 +87,7 @@ function signup() {
         currentUserHandler.setCurrentUser(userData);
         alert(`Welcome! ${userData.name}`);
         clearForm();
-        window.location.href = "/";
+        window.location.hash = "home";
     };
 
     fajax.onerror = () => {
@@ -97,4 +104,3 @@ function clearForm() {
     document.getElementById("login-email").value = "";
     document.getElementById("login-password").value = "";
 }
-

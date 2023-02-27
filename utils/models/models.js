@@ -42,12 +42,24 @@ export class User {
  * This is the model for the shopping list.
  */
 export class ShoppingList {
-    constructor(name, products) {
+    constructor(name, products, userId) {
+        /**
+         * the id of the shopping list.
+         * @type {string}
+         */
         this.id = '';
+
+        /**
+         * the id of the user.
+         * @type {string}
+         */
+        this.userId = userId;
+
         /**
          * @type {string}
          */
         this.name = name;
+
         /**
          * @type {Product[]}
          */
@@ -59,9 +71,9 @@ export class ShoppingList {
  * This is the model for the product.
  */
 export class Product {
-    constructor(name, category, amount) {
+    constructor(name, category, amount, listId) {
         this.id = '';
-        this.listId = '';
+        this.listId = listId;
         this.name = name;
         this.category = category;
         this.amount = amount;

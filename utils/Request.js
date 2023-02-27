@@ -6,7 +6,7 @@ export class Request {
         let lines = httpRequest.split("\r\n");
         [this.method, this.url] = this.valideteRequest(lines);
         this.setHeaders(lines);
-        if (this.method === "POST") {
+        if (this.method === "POST" || this.method === "PUT") {
             this.jsonBody = lines[lines.length - 1];
             this.body = JSON.parse(this.jsonBody);
         }
@@ -23,7 +23,7 @@ export class Request {
         if (httpVersion !== "HTTP/1.1") {
             throw "Invalid HTTP version";
         }
-        if (!method || !["GET", "POST", "PUT", "DELETE"].includes(method)) {
+        if (!method || !["GET", "GET/:id", "POST", "PUT", "DELETE"].includes(method)) {
             throw "Invalid method";
         }
         if (!url) {
@@ -45,14 +45,16 @@ export class Request {
 
     getParameters() {
         let parameters = {};
-        if (this.method === "GET") {
+        if (this.method.startsWith("GET") || this.method === "DELETE") {
             let url = this.url.split("?");
             if (url.length > 1) {
                 let params = url[1].split("&");
-                params.forEach(param => {
-                    let [key, value] = param.split("=");
-                    parameters[key] = value;
-                });
+                if (params.length > 0) {
+                    params.forEach(param => {
+                        let [key, value] = param.split("=");
+                        parameters[key] = value;
+                    });
+                }
             }
         }
         return parameters;

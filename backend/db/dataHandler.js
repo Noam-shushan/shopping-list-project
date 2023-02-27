@@ -24,7 +24,7 @@ export function saveData(fullId, data) {
     let collection = getCollection(collectionName);
     if (splitId.length === 2) {
         let redordId = splitId[1];
-        if (!(redordId in collection)) { // in case o insert
+        if (!collection.includes(redordId)) { // in case o insert
             collection.push(redordId);
             localStorage.setItem(collectionName, JSON.stringify(collection));
         }
@@ -43,7 +43,7 @@ export function saveData(fullId, data) {
 export function loadData(fullId) {
     let splitId = fullId.split('/');
     if (splitId.length === 2) {
-        return localStorage.getItem(fullId);
+        return JSON.parse(localStorage.getItem(fullId));
     }
     else if (splitId.length === 1) {
         let collectionName = splitId[0];
