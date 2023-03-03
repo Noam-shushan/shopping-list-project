@@ -6,7 +6,6 @@
 
 import { urlHash } from "./URLs.js";
 
-
 /**
  * Handle the location change by the hash
  */

@@ -1,28 +1,10 @@
 import * as currentUserHandler from "./CurrentUserHandler.js";
 import { ShoppingListsController } from './ShoppingListsController.js';
-import { FXMLHttpRequest } from "../fajax/FXMLHttpRequest.js";
 
 document.addEventListener('navigate', (event) => {
     const page = event.detail;
     if (page === 'home') {
         main();
-    }
-});
-
-document.addEventListener('onreload', () => {
-    const currentUser = currentUserHandler.getCurrentUser();
-    if (!currentUser) {
-        window.location.hash = 'login';
-        return;
-    }
-    else {
-        let fajax = new FXMLHttpRequest();
-        fajax.open("GET", `/api/users/?id=${currentUser.id}`);
-        fajax.send();
-        fajax.onload = () => {
-            const user = JSON.parse(fajax.responseText);
-            currentUserHandler.setCurrentUser(user);
-        };
     }
 });
 
@@ -37,7 +19,7 @@ function main() {
     userName.innerHTML += currentUser.name;
 
     if (currentUser.shoppingLists.length > 0) {
-        createShoppingListElemnt();
+        createShoppingListElement();
     }
 
     const listsContainer = document.querySelector('#lists');
@@ -49,7 +31,7 @@ function main() {
     logoutBtn.addEventListener('click', logout);
 }
 
-function createShoppingListElemnt() {
+function createShoppingListElement() {
     const soppingList = document.createElement('shopping-list');
     const container = document.querySelector('.right-side');
     container.appendChild(soppingList);
@@ -80,7 +62,7 @@ function handleAddNewList(shoppingListsController) {
 
     document.addEventListener('onNewList', (event) => {
         if (shoppingListsController.lists.length === 1) {
-            createShoppingListElemnt();
+            createShoppingListElement();
             shoppingListsController.rejesterToEvents();
             shoppingListsController.currentList = shoppingListsController.lists[0];
         }

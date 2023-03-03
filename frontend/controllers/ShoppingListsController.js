@@ -3,6 +3,7 @@ import * as currentUserHandler from "./CurrentUserHandler.js";
 import { ShoppingList, Product } from '../../utils/models/models.js';
 import { ProductsController } from './ProductsController.js';
 
+
 export class ShoppingListsController {
     constructor(listsContainer, lists) {
         this.productsController = new ProductsController();
@@ -101,12 +102,17 @@ export class ShoppingListsController {
         const request = new FXMLHttpRequest();
         request.open('POST', '/api/shopping-lists');
         request.send(new ShoppingList(listName, [], currentUser.id));
+
         request.onload = () => {
             console.log(request.responseText);
             const theNewList = JSON.parse(request.responseText);
 
             this.lists.push(theNewList);
+
             document.dispatchEvent(new CustomEvent('onNewList', { detail: theNewList }));
+
+            this.currentList = theNewList;
+
             currentUser.shoppingLists.push(theNewList);
             currentUserHandler.setCurrentUser(currentUser);
         };

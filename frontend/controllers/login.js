@@ -22,12 +22,13 @@ function main() {
     const signupBtn = document.querySelector('#signup-btn');
 
     loginBtn.addEventListener('click', () => {
-        console.log("login");
         login();
+        loginBtn.style.display = "none";
     });
 
     signupBtn.addEventListener('click', () => {
         signup();
+        signupBtn.style.display = "none";
     });
 }
 
@@ -42,21 +43,29 @@ function login() {
     fajax.open("GET", `/api/login-singup?email=${email}&password=${password}`);
     fajax.send();
     let userData = {};
+
+    const loader = document.querySelector('my-loader');
+    loader.loading = true;
+
     fajax.onload = () => {
         userData = JSON.parse(fajax.responseText);
         if (!userData) {
             alert("Username not found, please try again.");
             return;
         }
+        loader.loading = false;
         console.log(`user logged in: ${userData.email}`);
         currentUserHandler.setCurrentUser(userData);
-        alert(`Welcome back ${userData.name}!`);
+        const userMessge = document.querySelector('#user-message');
+        userMessge.innerText = `Welcome back ${userData.name}!`;
         clearForm();
         window.location.hash = "home";
     };
 
     fajax.onerror = () => {
-        alert(`Error: ${fajax.responseText}, status code: ${fajax.status}`);
+        const userMessge = document.querySelector('#user-message');
+        userMessge.innerText = `Error: ${fajax.responseText}, status code: ${fajax.status}`;
+
         clearForm();
     };
 }
@@ -74,6 +83,8 @@ function signup() {
         alert("Passwords do not match, please try again.");
         return;
     }
+
+    document.querySelector('my-loader').loading = true;
 
     let newUser = new User(name, email, password);
 
